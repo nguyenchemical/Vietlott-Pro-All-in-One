@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vietlott Pro - All In One</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .ball {
+            animation: ballPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+        }
+
+        @keyframes ballPop {
+            0% { transform: scale(0.2) translateY(30px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .game-card {
+            transition: all 0.2s ease;
+        }
+        .game-card:active {
+            transform: scale(0.97);
+            filter: brightness(0.9);
+        }
+
+        /* Gradients */
+        .grad-mega { background: linear-gradient(135deg, #e11d48, #9f1239); }
+        .grad-power { background: linear-gradient(135deg, #f59e0b, #b45309); }
+        .grad-max3d { background: linear-gradient(135deg, #2563eb, #1e3a8a); }
+        .grad-max3dpro { background: linear-gradient(135deg, #7c3aed, #4c1d95); }
+        .grad-bingo { background: linear-gradient(135deg, #db2777, #831843); }
+        .grad-keno { background: linear-gradient(135deg, #059669, #064e3b); }
+        .grad-lotto { background: linear-gradient(135deg, #475569, #1e293b); }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col pb-10">
+
+    <!-- Header -->
+    <header class="bg-red-600 text-white p-5 text-center shadow-xl sticky top-0 z-50">
+        <h1 class="text-2xl font-black italic tracking-tighter uppercase leading-none">Vietlott Pro</h1>
+        <p class="text-[9px] font-bold tracking-[0.4em] opacity-80 mt-1 uppercase">Ultimate Predictor</p>
+    </header>
+
+    <main class="flex-1 p-4 max-w-md mx-auto w-full flex flex-col gap-4 mt-2">
+        
+        <!-- Display Area -->
+        <div id="display-area" class="glass-panel rounded-[2.5rem] p-8 shadow-2xl border border-gray-100 min-h-[260px] flex flex-col items-center justify-center relative overflow-hidden text-center">
+            <div id="placeholder" class="text-center opacity-30">
+                <div class="text-6xl mb-3">🎲</div>
+                <p class="text-xs font-black uppercase tracking-widest">Chọn sản phẩm</p>
+            </div>
+            
+            <div id="balls-container" class="flex flex-wrap justify-center gap-3 w-full"></div>
+            
+            <div id="controls" class="hidden mt-8 w-full">
+                <button onclick="copyToClipboard()" class="w-full bg-slate-900 text-white py-4 rounded-2xl text-xs font-black uppercase tracking-[0.2em] shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2">
+                    Sao chép bộ số 🍀
+                </button>
+            </div>
+        </div>
+
+        <!-- Games Grid -->
+        <div class="grid grid-cols-1 gap-3">
+            <!-- Mega 6/45 -->
+            <button onclick="generate('mega')" class="game-card grad-mega text-white p-4 rounded-3xl flex justify-between items-center shadow-lg">
+                <div class="text-left">
+                    <div class="font-black text-lg italic uppercase">Mega 6/45</div>
+                    <div class="text-[9px] opacity-70 font-bold uppercase tracking-widest">6 số (01-45)</div>
+                </div>
+                <span class="text-2xl">🔥</span>
+            </button>
+
+            <!-- Power 6/55 -->
+            <button onclick="generate('power')" class="game-card grad-power text-white p-4 rounded-3xl flex justify-between items-center shadow-lg">
+                <div class="text-left">
+                    <div class="font-black text-lg italic uppercase">Power 6/55</div>
+                    <div class="text-[9px] opacity-90 font-bold uppercase tracking-widest">6 số (01-55)</div>
+                </div>
+                <span class="text-2xl">💎</span>
+            </button>
+
+            <!-- Max 3D (BỔ SUNG) -->
+            <button onclick="generate('max3d')" class="game-card grad-max3d text-white p-4 rounded-3xl flex justify-between items-center shadow-lg">
+                <div class="text-left">
+                    <div class="font-black text-lg italic uppercase">Max 3D</div>
+                    <div class="text-[9px] opacity-70 font-bold uppercase tracking-widest">Bộ 3 chữ số</div>
+                </div>
+                <span class="text-2xl">⭐</span>
+            </button>
+
+            <!-- Max 3D Pro -->
+            <button onclick="generate('max3dpro')" class="game-card grad-max3dpro text-white p-4 rounded-3xl flex justify-between items-center shadow-lg">
+                <div class="text-left">
+                    <div class="font-black text-lg italic uppercase">Max 3D Pro</div>
+                    <div class="text-[9px] opacity-70 font-bold uppercase tracking-widest">2 bộ 3 chữ số</div>
+                </div>
+                <span class="text-2xl">🚀</span>
+            </button>
+
+            <!-- Keno -->
+            <button onclick="generate('keno')" class="game-card grad-keno text-white p-4 rounded-3xl flex justify-between items-center shadow-lg">
+                <div class="text-left">
+                    <div class="font-black text-lg italic uppercase">Keno</div>
+                    <div class="text-[9px] opacity-70 font-bold uppercase tracking-widest">Bậc 10 (20 số / 1-80)</div>
+                </div>
+                <span class="text-2xl">🍀</span>
+            </button>
+
+            <!-- Bingo 18 -->
+            <button onclick="generate('bingo')" class="game-card grad-bingo text-white p-4 rounded-3xl flex justify-between items-center shadow-lg">
+                <div class="text-left">
+                    <div class="font-black text-lg italic uppercase text-white">Bingo 18</div>
+                    <div class="text-[9px] opacity-90 font-bold uppercase tracking-widest">3 số (1-6)</div>
+                </div>
+                <span class="text-2xl">🎲</span>
+            </button>
+
+            <!-- Lotto -->
+            <button onclick="generate('lotto')" class="game-card grad-lotto text-white p-4 rounded-3xl flex justify-between items-center shadow-lg">
+                <div class="text-left">
+                    <div class="font-black text-lg italic uppercase">Lotto / Lô Tô</div>
+                    <div class="text-[9px] opacity-70 font-bold uppercase tracking-widest">2 số cuối may mắn</div>
+                </div>
+                <span class="text-2xl">🎯</span>
+            </button>
+        </div>
+
+        <footer class="text-center px-6 mt-4">
+            <p class="text-[9px] text-gray-400 font-bold leading-relaxed uppercase tracking-tighter italic">
+                Ứng dụng tạo số ngẫu nhiên tham khảo.<br>Chúc bạn may mắn trúng giải Jackpot!
+            </p>
+        </footer>
+    </main>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-12 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-3 rounded-full text-[10px] font-black opacity-0 transition-opacity pointer-events-none z-[100] shadow-2xl uppercase tracking-widest border border-white/10">
+        Đã sao chép bộ số! 🍀
+    </div>
+
+    <script>
+        function generate(game) {
+            const container = document.getElementById('balls-container');
+            const placeholder = document.getElementById('placeholder');
+            const controls = document.getElementById('controls');
+            
+            container.innerHTML = '';
+            placeholder.classList.add('hidden');
+            controls.classList.remove('hidden');
+
+            let nums = [];
+            let colorClass = '';
+
+            switch(game) {
+                case 'mega':
+                    nums = getRandomUnique(6, 45);
+                    colorClass = 'grad-mega';
+                    break;
+                case 'power':
+                    nums = getRandomUnique(6, 55);
+                    colorClass = 'grad-power';
+                    break;
+                case 'max3d':
+                    nums = [rand(0, 9), rand(0, 9), rand(0, 9)];
+                    colorClass = 'grad-max3d';
+                    break;
+                case 'max3dpro':
+                    nums = [rand(0, 9), rand(0, 9), rand(0, 9), 'gap', rand(0, 9), rand(0, 9), rand(0, 9)];
+                    colorClass = 'grad-max3dpro';
+                    break;
+                case 'keno':
+                    nums = getRandomUnique(10, 80);
+                    colorClass = 'grad-keno';
+                    break;
+                case 'bingo':
+                    nums = [rand(1, 6), rand(1, 6), rand(1, 6)];
+                    colorClass = 'grad-bingo';
+                    break;
+                case 'lotto':
+                    nums = [rand(0, 9).toString() + rand(0, 9).toString(), 'gap', rand(0, 9).toString() + rand(0, 9).toString()];
+                    colorClass = 'grad-lotto';
+                    break;
+            }
+
+            nums.forEach((n, i) => {
+                if (n === 'gap') {
+                    const gap = document.createElement('div');
+                    gap.className = 'w-full h-1';
+                    container.appendChild(gap);
+                } else {
+                    const ball = document.createElement('div');
+                    ball.className = `ball ${colorClass} w-11 h-11 rounded-full flex items-center justify-center text-white font-black text-xl shadow-xl border-2 border-white/20`;
+                    ball.style.animationDelay = `${i * 0.08}s`;
+                    
+                    if ((game === 'mega' || game === 'power' || game === 'keno') && typeof n === 'number') {
+                        ball.innerText = n < 10 ? '0' + n : n;
+                    } else {
+                        ball.innerText = n;
+                    }
+                    
+                    container.appendChild(ball);
+                }
+            });
+
+            if (navigator.vibrate) navigator.vibrate(50);
+        }
+
+        function rand(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function getRandomUnique(count, max) {
+            let arr = [];
+            while(arr.length < count) {
+                let r = rand(1, max);
+                if(!arr.includes(r)) arr.push(r);
+            }
+            return arr.sort((a, b) => a - b);
+        }
+
+        function copyToClipboard() {
+            const balls = document.querySelectorAll('#balls-container div:not(.w-full)');
+            const text = Array.from(balls).map(b => b.innerText).join(' - ');
+            const dummy = document.createElement('textarea');
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+            
+            const toast = document.getElementById('toast');
+            toast.style.opacity = '1';
+            setTimeout(() => toast.style.opacity = '0', 2000);
+        }
+    </script>
+</body>
+</html>
+
